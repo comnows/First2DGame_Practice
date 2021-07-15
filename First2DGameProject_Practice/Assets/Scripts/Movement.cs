@@ -7,6 +7,8 @@ public class Movement : MonoBehaviour
     [SerializeField] Animator playerAnim;
     [SerializeField] Rigidbody2D playerRB;
     [SerializeField] float moveSpeed = 5;
+    [SerializeField] float jumpForce = 5;
+    bool isOnGround = true;
     //[Range(0,.3f)][SerializeField] float movementSmooth = 0.05f;
 
     //float horizontalMove = 0f;
@@ -19,7 +21,32 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.A))
         {
+            playerRB.velocity = new Vector2(-moveSpeed, playerRB.velocity.y);
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        if(Input.GetKey(KeyCode.D))
+        {
             playerRB.velocity = new Vector2(moveSpeed, playerRB.velocity.y);
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        if(Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        {
+            playerRB.AddForce(new Vector2(0, jumpForce));
+            isOnGround = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) 
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            Vector3 playerPosition = transform.position;
+            Vector3 groundPosition = collision.transform.position;
+
+            if(playerPosition.y >= groundPosition.y)
+            {
+                isOnGround = true;
+            }
         }
     }
 
