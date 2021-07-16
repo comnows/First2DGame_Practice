@@ -23,16 +23,31 @@ public class Movement : MonoBehaviour
         {
             playerRB.velocity = new Vector2(-moveSpeed, playerRB.velocity.y);
             transform.localScale = new Vector3(1, 1, 1);
+            playerAnim.SetBool("OnMoving", true);
         }
+        
         if(Input.GetKey(KeyCode.D))
         {
             playerRB.velocity = new Vector2(moveSpeed, playerRB.velocity.y);
             transform.localScale = new Vector3(-1, 1, 1);
+            playerAnim.SetBool("OnMoving", true);
         }
+
+        if(Input.GetKey(KeyCode.A) == false && Input.GetKey(KeyCode.D) == false)
+        {
+            playerAnim.SetBool("OnMoving", false);
+        }
+        
         if(Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             playerRB.AddForce(new Vector2(0, jumpForce));
             isOnGround = false;
+            playerAnim.SetTrigger("OnJumping");
+        }
+
+        if(Input.GetButtonDown("Fire1"))
+        {
+            playerAnim.SetTrigger("OnAttack");
         }
     }
 
