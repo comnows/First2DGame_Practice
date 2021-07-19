@@ -9,6 +9,8 @@ public class Movement : MonoBehaviour
     [SerializeField] float moveSpeed = 5;
     [SerializeField] float jumpForce = 5;
     bool isOnGround = true;
+
+    [SerializeField] AnimationNotify animNotify;
     //[Range(0,.3f)][SerializeField] float movementSmooth = 0.05f;
 
     //float horizontalMove = 0f;
@@ -45,8 +47,11 @@ public class Movement : MonoBehaviour
             playerAnim.SetTrigger("OnJumping");
         }
 
-        if(Input.GetButtonDown("Fire1"))
+        Checking_AttackingBehavior();
+
+        if(Input.GetButtonDown("Fire1") && animNotify.onAttacking == false)
         {
+            animNotify.onAttacking = true;
             playerAnim.SetTrigger("OnAttack");
         }
     }
@@ -62,6 +67,22 @@ public class Movement : MonoBehaviour
             {
                 isOnGround = true;
             }
+        }
+    }
+
+    void Checking_AttackingBehavior()
+    {
+        if(Input.GetButtonDown("Fire1") && animNotify.onAttacking == true)
+        {
+            if(animNotify.onContact == true || animNotify.onRecovery == true)
+            {
+                playerAnim.SetTrigger("OnCombo");
+            }
+        }
+
+        if(animNotify.onAttacking == false)
+        {
+            playerAnim.ResetTrigger("OnCombo");
         }
     }
 

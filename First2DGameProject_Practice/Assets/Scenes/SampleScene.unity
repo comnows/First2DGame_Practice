@@ -2615,6 +2615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 362698013}
   - component: {fileID: 362698014}
+  - component: {fileID: 362698015}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -2657,6 +2658,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &362698015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362698012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79fffbd0ccf9cb4889df43a32339dea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPreparation: 0
+  onContact: 0
+  onRecovery: 0
+  onAttacking: 0
 --- !u!1 &372937653
 GameObject:
   m_ObjectHideFlags: 0
@@ -13111,6 +13128,7 @@ MonoBehaviour:
   playerRB: {fileID: 2043615967}
   moveSpeed: 7
   jumpForce: 2000
+  animNotify: {fileID: 362698015}
 --- !u!50 &2043615967
 Rigidbody2D:
   serializedVersion: 4
