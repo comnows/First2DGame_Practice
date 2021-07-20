@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572558681802773452}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.27, y: -1.861, z: -120.09886}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1572558682578406485}
@@ -86,8 +86,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   enemyRB: {fileID: 1572558681802773450}
+  enemyMovespeed: 2
   horizontalKnockback: 800
   verticalKnockback: 800
+  targetPlayer: {fileID: 0}
 --- !u!1 &1572558681813347879
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572558681836287022}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0043492317, y: 0.70399994, z: 120.09886}
+  m_LocalPosition: {x: -0.0043492317, y: 0.70399994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1572558683125122185}
@@ -445,7 +447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572558682578406486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.037, y: 0.999, z: 120.09886}
+  m_LocalPosition: {x: 0.037, y: 0.999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1572558681813347878}

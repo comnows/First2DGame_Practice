@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
@@ -35,14 +36,14 @@ public class Movement : MonoBehaviour
             if(Input.GetKey(KeyCode.A))
             {
                 playerRB.velocity = new Vector2(-moveSpeed, playerRB.velocity.y);
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(1, 1, 1);    //another way to flip is in EnemyBehavior script
                 playerAnim.SetBool("OnMoving", true);
             }
         
             if(Input.GetKey(KeyCode.D))
             {
                 playerRB.velocity = new Vector2(moveSpeed, playerRB.velocity.y);
-                transform.localScale = new Vector3(-1, 1, 1);
+                transform.localScale = new Vector3(-1, 1, 1);   //another way to flip is in EnemyBehavior script
                 playerAnim.SetBool("OnMoving", true);
             }
         
@@ -71,6 +72,7 @@ public class Movement : MonoBehaviour
         }
 
         Checking_AttackingCollision();
+        FallingCheck();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) 
@@ -138,9 +140,12 @@ public class Movement : MonoBehaviour
         isStun = true;
         stunTimer = 0f;
 
+        Debug.Log("your health: " + playerHealth);
+
         if(playerHealth <= 0)
         {
             Debug.Log("Game Over!!");
+            SceneManager.LoadScene("SampleScene");
         }
     }
 
@@ -154,6 +159,14 @@ public class Movement : MonoBehaviour
             {
                 isStun = false;
             }
+        }
+    }
+
+    void FallingCheck()
+    {
+        if(transform.position.y <= -6.5)
+        {
+            Update_PlayerHealth(100, gameObject);
         }
     }
 
