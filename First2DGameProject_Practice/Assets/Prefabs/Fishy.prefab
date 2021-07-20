@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 1572558681802773451}
   - component: {fileID: 1572558681802773450}
   - component: {fileID: 1572558681802773449}
+  - component: {fileID: 2482426747162539851}
   m_Layer: 6
   m_Name: Fishy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,6 +72,22 @@ CapsuleCollider2D:
   m_Offset: {x: 0.008284569, y: 0.49829757}
   m_Size: {x: 0.6272068, y: 0.98259616}
   m_Direction: 0
+--- !u!114 &2482426747162539851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572558681802773452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a495d376b8104442a9515fa9013b70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  enemyRB: {fileID: 1572558681802773450}
+  horizontalKnockback: 800
+  verticalKnockback: 800
 --- !u!1 &1572558681813347879
 GameObject:
   m_ObjectHideFlags: 0

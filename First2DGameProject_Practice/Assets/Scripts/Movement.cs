@@ -8,9 +8,18 @@ public class Movement : MonoBehaviour
     [SerializeField] Rigidbody2D playerRB;
     [SerializeField] float moveSpeed = 5;
     [SerializeField] float jumpForce = 5;
+    [SerializeField] int atkDmg = 5;
+    [SerializeField] int playerHealth;
+    [SerializeField] float horizontalKnockback = 800;
+    [SerializeField] float verticalKnockback = 800;
     bool isOnGround = true;
 
     [SerializeField] AnimationNotify animNotify;
+    [SerializeField] AttackCollisionBehavior attackBehavior;
+
+    bool isStun = false;
+    float stunTimer = 0f;
+    float stunDuration = 0.65f;
     //[Range(0,.3f)][SerializeField] float movementSmooth = 0.05f;
 
     //float horizontalMove = 0f;
@@ -21,32 +30,38 @@ public class Movement : MonoBehaviour
 
     private void Update() 
     {
-        if(Input.GetKey(KeyCode.A))
+        if(isStun == false)
         {
-            playerRB.velocity = new Vector2(-moveSpeed, playerRB.velocity.y);
-            transform.localScale = new Vector3(1, 1, 1);
-            playerAnim.SetBool("OnMoving", true);
+            if(Input.GetKey(KeyCode.A))
+            {
+                playerRB.velocity = new Vector2(-moveSpeed, playerRB.velocity.y);
+                transform.localScale = new Vector3(1, 1, 1);
+                playerAnim.SetBool("OnMoving", true);
+            }
+        
+            if(Input.GetKey(KeyCode.D))
+            {
+                playerRB.velocity = new Vector2(moveSpeed, playerRB.velocity.y);
+                transform.localScale = new Vector3(-1, 1, 1);
+                playerAnim.SetBool("OnMoving", true);
+            }
+        
+            if(Input.GetKeyDown(KeyCode.Space) && isOnGround)
+            {
+                playerRB.AddForce(new Vector2(0, jumpForce));
+                isOnGround = false;
+                playerAnim.SetTrigger("OnJumping");
+            }
+        }
+        else
+        {
+            Update_StunStatus();
         }
         
-        if(Input.GetKey(KeyCode.D))
-        {
-            playerRB.velocity = new Vector2(moveSpeed, playerRB.velocity.y);
-            transform.localScale = new Vector3(-1, 1, 1);
-            playerAnim.SetBool("OnMoving", true);
-        }
-
         if(Input.GetKey(KeyCode.A) == false && Input.GetKey(KeyCode.D) == false)
         {
             playerAnim.SetBool("OnMoving", false);
         }
-        
-        if(Input.GetKeyDown(KeyCode.Space) && isOnGround)
-        {
-            playerRB.AddForce(new Vector2(0, jumpForce));
-            isOnGround = false;
-            playerAnim.SetTrigger("OnJumping");
-        }
-
         Checking_AttackingBehavior();
 
         if(Input.GetButtonDown("Fire1") && animNotify.onAttacking == false)
@@ -54,6 +69,8 @@ public class Movement : MonoBehaviour
             animNotify.onAttacking = true;
             playerAnim.SetTrigger("OnAttack");
         }
+
+        Checking_AttackingCollision();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) 
@@ -83,6 +100,60 @@ public class Movement : MonoBehaviour
         if(animNotify.onAttacking == false)
         {
             playerAnim.ResetTrigger("OnCombo");
+        }
+    }
+
+    void Checking_AttackingCollision()
+    {
+        if(attackBehavior.hitGameobjectsList.Count > 0)
+        {
+            for(int index = 0; index < attackBehavior.hitGameobjectsList.Count; index++)
+            {
+                GameObject currentHitGameobject = attackBehavior.hitGameobjectsList[index];
+
+                EnemyBehavior enemyBehavior = currentHitGameobject.GetComponent<EnemyBehavior>();
+                enemyBehavior.Update_EnemyHealth(atkDmg, gameObject);
+            }
+
+            attackBehavior.hitGameobjectsList.Clear();
+        }
+    }
+
+    public void Update_PlayerHealth(int damageReceived, GameObject attacker)
+    {
+        playerHealth -= damageReceived;
+
+        Vector3 currentLocation = gameObject.transform.position;
+        Vector3 damagedLocation = attacker.transform.position;
+
+        if(currentLocation.x > damagedLocation.x)
+        {
+            playerRB.AddForce(new Vector2(horizontalKnockback, verticalKnockback));
+        }
+        else
+        {
+            playerRB.AddForce(new Vector2(-horizontalKnockback, verticalKnockback));
+        }
+
+        isStun = true;
+        stunTimer = 0f;
+
+        if(playerHealth <= 0)
+        {
+            Debug.Log("Game Over!!");
+        }
+    }
+
+    void Update_StunStatus()
+    {
+        if(isStun == true)
+        {
+            stunTimer += Time.deltaTime;
+
+            if(stunTimer >= stunDuration)
+            {
+                isStun = false;
+            }
         }
     }
 

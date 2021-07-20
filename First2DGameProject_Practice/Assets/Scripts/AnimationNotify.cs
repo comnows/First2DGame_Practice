@@ -8,13 +8,15 @@ public class AnimationNotify : MonoBehaviour
     public bool onContact = false;
     public bool onRecovery = false;
     public bool onAttacking = false;
+    public BoxCollider2D attackCollision;
 
     public void preparationStep()
     {
         onPreparation = true;
         onContact = false;
         onRecovery = false;
-        Debug.Log("Preparation Step");
+        //Debug.Log("Preparation Step");
+        attackCollision.enabled = false;
     }
 
     public void ContactStep()
@@ -22,14 +24,16 @@ public class AnimationNotify : MonoBehaviour
         onPreparation = false;
         onContact = true;
         onRecovery = false;
-        Debug.Log("Contact Step");
+        //Debug.Log("Contact Step");
+        attackCollision.enabled = true;
     }
     public void RecoveryStep()
     {
         onPreparation = false;
         onContact = false;
         onRecovery = true;
-        Debug.Log("Recovery Step");
+        //Debug.Log("Recovery Step");
+        attackCollision.enabled = false;
     }
 
     public void EndAttack()
@@ -38,6 +42,7 @@ public class AnimationNotify : MonoBehaviour
         onContact = false;
         onRecovery = false;
         onAttacking = false;
-        Debug.Log("End attack");
+        //Debug.Log("End attack");
+        attackCollision.enabled = false;
     }
 }
