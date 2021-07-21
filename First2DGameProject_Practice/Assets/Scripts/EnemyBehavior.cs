@@ -89,6 +89,8 @@ public class EnemyBehavior : MonoBehaviour
             enemyRB.AddForce(new Vector2(-horizontalKnockback, verticalKnockback));
         }
 
+        SoundController.soundInstance.PlaySoundEffect(3);
+
         if(health <= 0)
         {
             Movement playerMovement = targetPlayer.GetComponent<Movement>();

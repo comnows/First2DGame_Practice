@@ -17,6 +17,7 @@ public class AnimationNotify : MonoBehaviour
         onRecovery = false;
         //Debug.Log("Preparation Step");
         attackCollision.enabled = false;
+        SoundController.soundInstance.PlaySoundEffect(1);
     }
 
     public void ContactStep()

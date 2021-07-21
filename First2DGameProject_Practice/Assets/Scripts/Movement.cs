@@ -67,6 +67,8 @@ public class Movement : MonoBehaviour
                 playerRB.AddForce(new Vector2(0, jumpForce));
                 isOnGround = false;
                 playerAnim.SetTrigger("OnJumping");
+
+                SoundController.soundInstance.PlaySoundEffect(0);
             }
         }
         else
@@ -160,6 +162,7 @@ public class Movement : MonoBehaviour
         stunTimer = 0f;
 
         Debug.Log("your health: " + playerHealth);
+        SoundController.soundInstance.PlaySoundEffect(2);
 
         if(playerHealth <= 0)
         {
@@ -225,6 +228,14 @@ public class Movement : MonoBehaviour
 
     public void Restart()
     {
+        SoundController.soundInstance.PlaySoundEffect(5);
+        //Time.timeScale = 1;
+        StartCoroutine(WaitThenLoadScene());
+    }
+
+    IEnumerator WaitThenLoadScene()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
         Time.timeScale = 1;
         SceneManager.LoadScene("SampleScene");
     }

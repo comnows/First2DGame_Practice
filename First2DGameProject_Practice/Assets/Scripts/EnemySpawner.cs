@@ -41,5 +41,7 @@ public class EnemySpawner : MonoBehaviour
         Rigidbody2D enemyRB = enemyPref.GetComponent<Rigidbody2D>();
         float randomJumpForce = Random.Range(minJumpForce, maxJumpForce);
         enemyRB.AddForce(new Vector2(0, randomJumpForce));
+
+        SoundController.soundInstance.PlaySoundEffect(4);
     }
 }
