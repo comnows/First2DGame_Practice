@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -90,6 +91,9 @@ public class EnemyBehavior : MonoBehaviour
 
         if(health <= 0)
         {
+            Movement playerMovement = targetPlayer.GetComponent<Movement>();
+            playerMovement.playerScore += 1;
+            playerMovement.killCountText.text = "Kill Count: " + playerMovement.playerScore;
             Destroy(gameObject);
         }
     }

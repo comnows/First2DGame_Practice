@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
@@ -10,7 +11,15 @@ public class Movement : MonoBehaviour
     [SerializeField] float moveSpeed = 5;
     [SerializeField] float jumpForce = 5;
     [SerializeField] int atkDmg = 5;
-    [SerializeField] int playerHealth;
+    int playerHealth = 15;
+    [SerializeField] GameObject[] playerHealthIcon;
+    [SerializeField] Image HealthBarUI;
+    [SerializeField] public Text killCountText;
+    [SerializeField] Text killCountHighScoreText;
+    [SerializeField] GameObject gameOverPanel;
+    public int playerScore = 0;
+    int highScore = 0;
+
     [SerializeField] float horizontalKnockback = 800;
     [SerializeField] float verticalKnockback = 800;
     bool isOnGround = true;
@@ -28,6 +37,12 @@ public class Movement : MonoBehaviour
 
     //private bool facingRight = false;
     //private Vector3 velocity = Vector3.zero;
+
+    private void Start() 
+    {
+        highScore = PlayerPrefs.GetInt("Highscore");
+        killCountHighScoreText.text = "High Score: " + highScore;
+    }
 
     private void Update() 
     {
@@ -73,6 +88,7 @@ public class Movement : MonoBehaviour
 
         Checking_AttackingCollision();
         FallingCheck();
+        Update_HealthBarAnimation();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) 
@@ -115,6 +131,9 @@ public class Movement : MonoBehaviour
 
                 EnemyBehavior enemyBehavior = currentHitGameobject.GetComponent<EnemyBehavior>();
                 enemyBehavior.Update_EnemyHealth(atkDmg, gameObject);
+
+                //playerScore += 1;
+                //killCountText.text = "Kill Count: " + playerScore;
             }
 
             attackBehavior.hitGameobjectsList.Clear();
@@ -144,9 +163,43 @@ public class Movement : MonoBehaviour
 
         if(playerHealth <= 0)
         {
+            playerHealth = 0;
             Debug.Log("Game Over!!");
-            SceneManager.LoadScene("SampleScene");
+            //SceneManager.LoadScene("SampleScene");
+
+            gameOverPanel.SetActive(true);
+            Time.timeScale = 0;
+
+            if(playerScore > highScore)
+            {
+                PlayerPrefs.SetInt("Highscore", playerScore);
+            }
         }
+
+        if(playerHealth >= 0)
+        {
+            int numberOfHealthToShow = playerHealth / 5;
+
+            for(int index = 0; index < playerHealthIcon.Length; index++)
+            {
+                if(index < numberOfHealthToShow)
+                {
+                    playerHealthIcon[index].SetActive(true);
+                }
+                else
+                {
+                    playerHealthIcon[index].SetActive(false);
+                }
+            }
+        }
+    }
+
+    void Update_HealthBarAnimation()
+    {
+        float healthRatio = playerHealth / 15f;
+        //HealthBarUI.fillAmount = healthRatio;
+        float currentHealthRation = HealthBarUI.fillAmount;
+        HealthBarUI.fillAmount = Mathf.Lerp(currentHealthRation, healthRatio, 0.01f);
     }
 
     void Update_StunStatus()
@@ -168,6 +221,12 @@ public class Movement : MonoBehaviour
         {
             Update_PlayerHealth(100, gameObject);
         }
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("SampleScene");
     }
 
     //advance see in Brackeys Channel
